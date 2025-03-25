@@ -1,7 +1,27 @@
 @import "tailwindcss";
 
+@theme {
+  --color-saige-red: #FF4052;
+  --color-saige-black:#000000;
+  --color-saige-dark-grey:#6A7A7C;
+  --color-saige-grey:#7F8D8E;
+  --color-saige-light-grey:#CBD0D1;
+}
+
+@font-face {
+  font-family: "MinSans";
+  font-weight: 400;
+  src: url("./assets/font/MinSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "MinSans";
+  font-weight: 800;
+  src: url("./assets/font/MinSans-ExtraBold.woff2") format("woff2");
+}
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'MinSans', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -18,4 +38,3 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
-
