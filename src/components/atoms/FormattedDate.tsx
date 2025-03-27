@@ -1,17 +1,17 @@
 type FormattedDataProps = {
-  currentDate: Date
+  date: Date
   options?: Intl.DateTimeFormatOptions
   className?: string
 }
 
 export function FormattedDate({
-  currentDate,
+  date,
   options,
   className,
 }: FormattedDataProps) {
   return (
-    <span className={`text-saige-dark-grey ${className}`}>
-      {new Date(currentDate).toLocaleDateString('ko-KR', options)}
+    <span className={`${className}`}>
+      {new Date(date).toLocaleDateString('ko-KR', options)}
     </span>
   )
 }
