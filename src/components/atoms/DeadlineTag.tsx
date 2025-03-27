@@ -12,8 +12,9 @@ type DeadlineTagProps = {
 
 export function DeadlineTag({ currentDate, deadline }: DeadlineTagProps) {
   const tagLabel = useMemo(() => {
-    const deadlineDate = dayjs(deadline)
-    const diffDays = deadlineDate.diff(currentDate, 'day')
+    const deadlineDate = dayjs(deadline).startOf('day')
+    const currentDayjs = dayjs(currentDate).startOf('day')
+    const diffDays = deadlineDate.diff(currentDayjs, 'day')
 
     if (diffDays === 0) {
       return '오늘'
@@ -29,7 +30,7 @@ export function DeadlineTag({ currentDate, deadline }: DeadlineTagProps) {
   return (
     <>
       {tagLabel != null && (
-        <Tag color="magenta" style={{ marginRight: 0 }}>
+        <Tag color="red" style={{ marginRight: 0 }}>
           {tagLabel}
         </Tag>
       )}
