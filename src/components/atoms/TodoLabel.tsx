@@ -1,11 +1,11 @@
 import { Typography } from 'antd'
 
-type TaskLabelProps = {
+type TodoLabelProps = {
   label: string
   color?: string
 }
 
-export function TaskLabel({ label, color }: TaskLabelProps) {
+export function TodoLabel({ label, color }: TodoLabelProps) {
   return (
     <Typography.Paragraph
       style={{ margin: 0, fontSize: '16px', color: color ?? 'black' }}

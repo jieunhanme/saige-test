@@ -1,5 +1,5 @@
 import { Space } from 'antd'
-import { FormattedDate, TaskSearchInput } from '../atoms'
+import { FormattedDate, TodoSearchInput } from '../atoms'
 
 const options: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -31,7 +31,7 @@ export function Header({
         options={options}
         className="text-xl font-extrabold text-saige-black"
       />
-      <TaskSearchInput
+      <TodoSearchInput
         searchKeyword={searchKeyword}
         handleSetSearchKeyword={handleSetSearchKeyword}
       />

@@ -2,32 +2,32 @@ import { Checkbox, CheckboxChangeEvent, Space } from 'antd'
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react'
 
 import { ToDo } from '../../types/api'
-import { TaskCard } from '../organisms'
+import { TodoCard } from '../organisms'
 
-type TaskListProps = {
+type TodoListProps = {
   todos: ToDo[]
   isRemoving: boolean
   currentDate: Date
 }
 
-type TaskId = ToDo['id']
+type TodoId = ToDo['id']
 
-export type TaskListRef = {
-  getSelectedTodos: () => TaskId[]
+export type TodoListRef = {
+  getSelectedTodos: () => TodoId[]
   setClear: () => void
 }
 
-export const TaskList = forwardRef(function (
-  { todos, isRemoving, currentDate }: TaskListProps,
-  ref: ForwardedRef<TaskListRef>
+export const TodoList = forwardRef(function (
+  { todos, isRemoving, currentDate }: TodoListProps,
+  ref: ForwardedRef<TodoListRef>
 ) {
-  const [selectedTodos, setSelectedTodos] = useState<TaskId[]>([])
+  const [selectedTodos, setSelectedTodos] = useState<TodoId[]>([])
 
-  const handleCheckboxChange = (event: CheckboxChangeEvent, id: TaskId) => {
+  const handleCheckboxChange = (event: CheckboxChangeEvent, id: TodoId) => {
     const checked = event.target.checked
     if (checked) setSelectedTodos((selected) => [...selected, id])
     else
-      setSelectedTodos((selected) => selected.filter((taskId) => taskId !== id))
+      setSelectedTodos((selected) => selected.filter((todoId) => todoId !== id))
   }
 
   useImperativeHandle(ref, () => ({
@@ -50,7 +50,7 @@ export const TaskList = forwardRef(function (
               onChange={(event) => handleCheckboxChange(event, todo.id)}
             />
           )}
-          <TaskCard
+          <TodoCard
             todo={todo}
             isRemoving={isRemoving}
             currentDate={currentDate}

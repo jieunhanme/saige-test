@@ -2,22 +2,22 @@ import { useState } from 'react'
 import { Col, Row } from 'antd'
 
 import { AddButton, RemoveButton } from '../atoms'
-import { TaskForm } from '../molecules'
+import { TodoForm } from '../molecules'
 import { ToDoRequest } from '../../types/api'
 
-type TaskActionBarProps = {
+type TodoActionBarProps = {
   isRemoving: boolean
   currentDate: Date
-  handleAddTask: (values: ToDoRequest) => void
+  handleAddTodo: (values: ToDoRequest) => void
   handleSetIsRemoving: (value: boolean) => void
 }
 
-export function TaskActionBar({
+export function TodoActionBar({
   isRemoving,
   currentDate,
-  handleAddTask,
+  handleAddTodo,
   handleSetIsRemoving,
-}: TaskActionBarProps) {
+}: TodoActionBarProps) {
   const [isAdding, setIsAdding] = useState<boolean>(false)
 
   const handleClickAdd = () => {
@@ -28,7 +28,7 @@ export function TaskActionBar({
   const handleClickRemove = () => handleSetIsRemoving(!isRemoving)
 
   const handleSubmit = (values: ToDoRequest) => {
-    handleAddTask(values)
+    handleAddTodo(values)
     setIsAdding(false)
   }
   const handleCancelSubmit = () => {
@@ -47,7 +47,7 @@ export function TaskActionBar({
           </Col>
         </Row>
       ) : (
-        <TaskForm
+        <TodoForm
           currentDate={currentDate}
           handleSubmit={handleSubmit}
           handleCancelSubmit={handleCancelSubmit}

@@ -1,16 +1,16 @@
 import { useState } from 'react'
 import { Card, Checkbox, CheckboxProps } from 'antd'
 
-import { DeadlineTag, FormattedDate, TaskLabel } from '../atoms'
-import { TaskForm } from '../molecules'
+import { DeadlineTag, FormattedDate, TodoLabel } from '../atoms'
+import { TodoForm } from '../molecules'
 import { ToDo, ToDoRequest } from '../../types/api'
 
-type TaskCardType = {
+type TodoCardType = {
   todo: ToDo
   isRemoving: boolean
   currentDate: Date
 }
-export function TaskCard({ todo, isRemoving, currentDate }: TaskCardType) {
+export function TodoCard({ todo, isRemoving, currentDate }: TodoCardType) {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const { text, deadline, done } = todo
   const [isChecked, setIsChecked] = useState<boolean>(done)
@@ -19,7 +19,7 @@ export function TaskCard({ todo, isRemoving, currentDate }: TaskCardType) {
 
   const handleSubmit = (values: ToDoRequest) => {
     // TODO 콜백 제공 예정
-    console.log('TaskItemCard [values]:: ', values)
+    console.log('TodoItemCard [values]:: ', values)
     setIsEditing(false)
   }
 
@@ -45,7 +45,7 @@ export function TaskCard({ todo, isRemoving, currentDate }: TaskCardType) {
           variant="borderless"
           hoverable
         >
-          <TaskForm
+          <TodoForm
             todo={todo}
             handleSubmit={handleSubmit}
             handleCancelSubmit={handleCancelSubmit}
@@ -73,7 +73,7 @@ export function TaskCard({ todo, isRemoving, currentDate }: TaskCardType) {
               onChange={handleCheckboxChange}
               onClick={(event) => event.stopPropagation()}
             />
-            <TaskLabel
+            <TodoLabel
               label={text}
               color={isChecked ? 'var(--color-saige-grey)' : ''}
             />

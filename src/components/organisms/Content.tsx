@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Space } from 'antd'
 
 import { ToDo, ToDoRequest } from '../../types/api'
-import { TaskList, TaskActionBar, TaskListRef } from '../organisms'
+import { TodoList, TodoActionBar, TodoListRef } from '../organisms'
 import { EmptyList } from '../atoms'
 
 type ContentProps = {
@@ -13,7 +13,7 @@ type ContentProps = {
 export function Content({ searchKeyword, currentDate }: ContentProps) {
   const [todos, setTodos] = useState<ToDo[]>([])
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
-  const listRef = useRef<TaskListRef>(null)
+  const listRef = useRef<TodoListRef>(null)
 
   const handleSetIsRemoving = (value: boolean) => {
     if (value) {
@@ -25,13 +25,13 @@ export function Content({ searchKeyword, currentDate }: ContentProps) {
     setIsRemoving(value)
   }
 
-  const handleAddTask = (values: ToDoRequest) => {
+  const handleAddTodo = (values: ToDoRequest) => {
     setTodos((todos) => [...todos, { ...values, id: 1 }])
   }
 
-  const filteredTask = todos.filter((todo) => todo.text.includes(searchKeyword))
+  const filteredTodo = todos.filter((todo) => todo.text.includes(searchKeyword))
 
-  const isEmpty = !todos.length || !filteredTask.length
+  const isEmpty = !todos.length || !filteredTodo.length
 
   return (
     <Space
@@ -40,18 +40,18 @@ export function Content({ searchKeyword, currentDate }: ContentProps) {
       style={{ display: 'flex' }}
       className="overflow-hidden"
     >
-      <TaskActionBar
+      <TodoActionBar
         isRemoving={isRemoving}
         currentDate={currentDate}
-        handleAddTask={handleAddTask}
+        handleAddTodo={handleAddTodo}
         handleSetIsRemoving={handleSetIsRemoving}
       />
       {isEmpty ? (
-        <EmptyList description={!todos.length ? noTask : noFilterdTask} />
+        <EmptyList description={!todos.length ? noTodo : noFilterdTodo} />
       ) : (
-        <TaskList
+        <TodoList
           ref={listRef}
-          todos={filteredTask}
+          todos={filteredTodo}
           isRemoving={isRemoving}
           currentDate={currentDate}
         />
@@ -60,14 +60,14 @@ export function Content({ searchKeyword, currentDate }: ContentProps) {
   )
 }
 
-const noTask = (
+const noTodo = (
   <p>
     할 일이 없어요.
     <br />
     여유로운 하루를 즐겨보세요. 😊
   </p>
 )
-const noFilterdTask = (
+const noFilterdTodo = (
   <p>
     검색결과가 없어요.
     <br />

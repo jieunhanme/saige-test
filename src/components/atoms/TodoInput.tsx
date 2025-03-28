@@ -1,9 +1,9 @@
 import { Input, InputProps, InputRef } from 'antd'
 import { forwardRef } from 'react'
 
-interface TaskInputProps extends InputProps {}
+interface TodoInputProps extends InputProps {}
 
-export const TaskInput = forwardRef<InputRef, TaskInputProps>(
+export const TodoInput = forwardRef<InputRef, TodoInputProps>(
   ({ value, onChange, ...props }, ref) => {
     return (
       <Input

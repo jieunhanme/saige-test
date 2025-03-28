@@ -3,15 +3,15 @@ import { SearchProps } from 'antd/es/input'
 
 const { Search } = Input
 
-type TaskSearchInput = {
+type TodoSearchInput = {
   searchKeyword: string
   handleSetSearchKeyword: (keyword: string) => void
 }
 
-export function TaskSearchInput({
+export function TodoSearchInput({
   searchKeyword,
   handleSetSearchKeyword,
-}: TaskSearchInput) {
+}: TodoSearchInput) {
   const handleSearch: SearchProps['onSearch'] = (value) =>
     handleSetSearchKeyword(value)
 

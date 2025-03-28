@@ -2,23 +2,23 @@ import { useLayoutEffect, useRef } from 'react'
 import { Checkbox, Form, FormProps, Input, InputRef } from 'antd'
 import dayjs from 'dayjs'
 
-import { DeadlinePicker, TaskInput } from '../atoms'
+import { DeadlinePicker, TodoInput } from '../atoms'
 import { ToDo, ToDoRequest } from '../../types/api'
 import { useClickOutside } from '../../hooks'
 
-type TaskFormProps = {
+type TodoFormProps = {
   todo?: ToDo
   currentDate?: Date
   handleSubmit?: (values: ToDoRequest) => void
   handleCancelSubmit?: () => void
 }
 
-export function TaskForm({
+export function TodoForm({
   todo,
   currentDate,
   handleSubmit,
   handleCancelSubmit,
-}: TaskFormProps) {
+}: TodoFormProps) {
   const [form] = Form.useForm()
   const inputRef = useRef<InputRef>(null)
   const ref = useClickOutside(() => form.submit())
@@ -59,7 +59,7 @@ export function TaskForm({
             marginBottom: 0,
           }}
         >
-          <TaskInput ref={inputRef} />
+          <TodoInput ref={inputRef} />
         </Form.Item>
         <Form.Item
           name="deadline"
