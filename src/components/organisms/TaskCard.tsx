@@ -63,7 +63,7 @@ export function TaskCard({ todo, isRemoving, currentDate }: TaskCardType) {
             },
           }}
           variant="borderless"
-          className={`${isChecked && 'strike'} flex-1`}
+          className={`${isChecked && 'strike'} flex-1 overflow-hidden`}
           onClick={handleClickCard}
           hoverable
         >

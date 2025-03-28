@@ -24,6 +24,7 @@
   font-family: 'MinSans', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  background-color: #cbd0d127;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -38,3 +39,20 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+.strike { position:relative; }
+.strike::after {
+  --thickness: .1em;
+  --strike: 0;
+  content:' ';
+  position:absolute;
+  top:50%; 
+  left:30px;
+  width:0; 
+  height:1px;
+  opacity:70%;
+  transform:translateY(-50%);
+    background: linear-gradient(90deg, transparent, var(--color-saige-grey) 0) no-repeat right center;
+  animation: strike 0.5s ease-out .3s 1 forwards;
+}
+@keyframes strike { to { width: calc(100% - 30px - 16px) } }
