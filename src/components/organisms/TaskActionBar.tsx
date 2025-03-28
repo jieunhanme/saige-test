@@ -6,10 +6,11 @@ import { TaskForm } from '../molecules'
 import { ToDoRequest } from '../../types/api'
 
 type TaskActionBarProps = {
+  currentDate: Date
   handleAddTask: (values: ToDoRequest) => void
 }
 
-export function TaskActionBar({ handleAddTask }: TaskActionBarProps) {
+  currentDate,
   const [isAdding, setIsAdding] = useState<boolean>(false)
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
 
@@ -41,6 +42,7 @@ export function TaskActionBar({ handleAddTask }: TaskActionBarProps) {
         </Row>
       ) : (
         <TaskForm
+          currentDate={currentDate}
           handleSubmit={handleSubmit}
           handleCancelSubmit={handleCancelSubmit}
         />

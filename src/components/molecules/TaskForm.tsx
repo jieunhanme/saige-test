@@ -8,12 +8,14 @@ import { useClickOutside } from '../../hooks'
 
 type TaskFormProps = {
   todo?: ToDo
+  currentDate?: Date
   handleSubmit?: (values: ToDoRequest) => void
   handleCancelSubmit?: () => void
 }
 
 export function TaskForm({
   todo,
+  currentDate,
   handleSubmit,
   handleCancelSubmit,
 }: TaskFormProps) {
@@ -53,7 +55,7 @@ export function TaskForm({
           rules={[{ required: true, message: '' }]}
           style={{
             display: 'inline-block',
-            width: 'calc(70% - 8px)',
+            width: 'calc(100% - 140px - 8px)',
             marginBottom: 0,
           }}
         >
@@ -64,13 +66,13 @@ export function TaskForm({
           rules={[{ required: true, message: '' }]}
           style={{
             display: 'inline-block',
-            width: 'calc(30% - 8px)',
+            width: '140px',
             margin: '0 0 0 8px',
           }}
           getValueProps={(value) => ({ value: value && dayjs(Number(value)) })}
           normalize={(value) => value && dayjs(value).valueOf()}
         >
-          <DeadlinePicker />
+          <DeadlinePicker minDate={dayjs(currentDate)} />
         </Form.Item>
         <Form.Item name="id" hidden>
           <Input />
