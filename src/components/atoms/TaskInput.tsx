@@ -12,6 +12,7 @@ export const TaskInput = forwardRef<InputRef, TaskInputProps>(
         {...props}
         value={value}
         onChange={onChange}
+        autoComplete="off"
       />
     )
   }
