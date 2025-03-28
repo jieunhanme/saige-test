@@ -1,17 +1,16 @@
 import { Empty } from 'antd'
+import { ReactNode } from 'react'
 
-export function EmptyList() {
+type EmptyListProps = {
+  description: ReactNode
+}
+
+export function EmptyList({ description }: EmptyListProps) {
   return (
     <Empty
       className="h-[600px] !m-0 py-16"
       image={Empty.PRESENTED_IMAGE_SIMPLE}
-      description={
-        <p>
-          할 일이 없어요.
-          <br />
-          여유로운 하루를 즐겨보세요 😊
-        </p>
-      }
+      description={description}
     />
   )
 }
