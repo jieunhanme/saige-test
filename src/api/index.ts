@@ -10,8 +10,18 @@ export const createTodo = async (
     body: JSON.stringify(todo),
   })
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`)
+    throw new Error(`HTTP error! [createTodo]: ${response.status}`)
   }
+  return response.json()
+}
 
+export const getTodos = async (): Promise<APIResponse<ToDo[]>> => {
+  const response = await fetch(baseUrl, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! [getTodos]: ${response.status}`)
+  }
   return response.json()
 }

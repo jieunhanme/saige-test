@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { ConfigProvider } from 'antd'
 
-import { createTodo } from './api'
+import { createTodo, getTodos } from './api'
 import { ToDo, ToDoRequest } from './types/api'
 import { useCurrentDate, useLocalStorage } from './hooks'
 import { Todo } from './components/templates'
@@ -30,6 +30,21 @@ function App() {
     } catch (error) {
       setTodos((prev) => prev.filter((item) => item.id !== tempId))
     }
+  }, [])
+
+  const handleGetTodos = useCallback(async () => {
+    try {
+      const { data } = await getTodos()
+      if (!data) return
+      setTodos(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  useEffect(() => {
+    handleGetTodos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
