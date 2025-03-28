@@ -1,21 +1,32 @@
-import { Button, ConfigProvider } from 'antd'
+import { ConfigProvider } from 'antd'
+
+import { useCurrentDate, useLocalStorage } from './hooks'
+import { Todo } from './components/templates'
 import './App.css'
 
 function App() {
+  const currentDate = useCurrentDate()
+  const [storedValue, setStoredValue] = useLocalStorage<string>('keyword', '')
+
+  const handleSetSearchKeyword = (keyword: string) => {
+    setStoredValue(keyword)
+  }
+
   return (
     <ConfigProvider
       theme={{
         token: {
           colorPrimary: '#FF4052',
-          borderRadius: 4,
+          borderRadius: 8,
           fontFamily: 'MinSans',
         },
       }}
     >
-      <div className="text-saige-dark-grey">
-        이곳에 To-Do App을 작성해주세요.
-      </div>
-      <Button type="primary">버튼</Button>
+      <Todo
+        currentDate={currentDate}
+        searchKeyword={storedValue}
+        handleSetSearchKeyword={handleSetSearchKeyword}
+      />
     </ConfigProvider>
   )
 }
