@@ -1,13 +1,20 @@
 import { Checkbox, CheckboxChangeEvent, Space } from 'antd'
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react'
 
-import { ToDo } from '../../types/api'
+import { ToDo, ToDoRequest } from '../../types/api'
 import { TodoCard } from '../organisms'
 
 type TodoListProps = {
   todos: ToDo[]
   isRemoving: boolean
   currentDate: Date
+  handleUpdateTodo: ({
+    id,
+    update,
+  }: {
+    id: ToDo['id']
+    update: ToDoRequest
+  }) => Promise<void>
 }
 
 type TodoId = ToDo['id']
@@ -18,7 +25,7 @@ export type TodoListRef = {
 }
 
 export const TodoList = forwardRef(function (
-  { todos, isRemoving, currentDate }: TodoListProps,
+  { todos, isRemoving, currentDate, handleUpdateTodo }: TodoListProps,
   ref: ForwardedRef<TodoListRef>
 ) {
   const [selectedTodos, setSelectedTodos] = useState<TodoId[]>([])
@@ -42,9 +49,8 @@ export const TodoList = forwardRef(function (
       style={{ display: 'flex' }}
       className="h-[600px] overflow-y-auto p-4"
     >
-      {todos.map((todo, index) => (
-        // NOTE 연동 이후 key 변경 예정
-        <div key={index} className="flex gap-2">
+      {todos.map((todo) => (
+        <div key={todo.id} className="flex gap-2">
           {isRemoving && (
             <Checkbox
               onChange={(event) => handleCheckboxChange(event, todo.id)}
@@ -54,6 +60,7 @@ export const TodoList = forwardRef(function (
             todo={todo}
             isRemoving={isRemoving}
             currentDate={currentDate}
+            handleUpdateTodo={handleUpdateTodo}
           />
         </div>
       ))}

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ConfigProvider } from 'antd'
 
-import { createTodo, getTodos } from './api'
+import { createTodo, getTodos, updateTodo } from './api'
 import { ToDo, ToDoRequest } from './types/api'
 import { useCurrentDate, useLocalStorage } from './hooks'
 import { Todo } from './components/templates'
@@ -42,6 +42,25 @@ function App() {
     }
   }, [])
 
+  const handleUpdateTodo = useCallback(
+    async ({ id, update }: { id: ToDo['id']; update: ToDoRequest }) => {
+      const originalTodo = todos.find((todo) => todo.id === id)
+      if (!originalTodo) return
+
+      setTodos((prev) =>
+        prev.map((todo) => (todo.id === id ? { id, ...update } : todo))
+      )
+      try {
+        await updateTodo({ id, todo: update })
+      } catch (error) {
+        setTodos((prev) =>
+          prev.map((todo) => (todo.id === id ? originalTodo : todo))
+        )
+      }
+    },
+    [todos]
+  )
+
   useEffect(() => {
     handleGetTodos()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,6 +82,7 @@ function App() {
         searchKeyword={storedValue}
         handleSetSearchKeyword={handleSetSearchKeyword}
         handleAddTodo={handleAddTodo}
+        handleUpdateTodo={handleUpdateTodo}
       />
     </ConfigProvider>
   )

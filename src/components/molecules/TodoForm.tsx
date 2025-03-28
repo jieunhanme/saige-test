@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react'
-import { Checkbox, Form, FormProps, Input, InputRef } from 'antd'
+import { Checkbox, Form, FormProps, InputRef } from 'antd'
 import dayjs from 'dayjs'
 
 import { DeadlinePicker, TodoInput } from '../atoms'
@@ -73,9 +73,6 @@ export function TodoForm({
           normalize={(value) => value && dayjs(value).valueOf()}
         >
           <DeadlinePicker minDate={dayjs(currentDate)} />
-        </Form.Item>
-        <Form.Item name="id" hidden>
-          <Input />
         </Form.Item>
         <Form.Item name="done" valuePropName="checked" hidden>
           <Checkbox />

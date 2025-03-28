@@ -9,7 +9,14 @@ type ContentProps = {
   todos: ToDo[]
   currentDate: Date
   searchKeyword: string
-  handleAddTodo: (newTodo: ToDoRequest) => void
+  handleAddTodo: (newTodo: ToDoRequest) => Promise<void>
+  handleUpdateTodo: ({
+    id,
+    update,
+  }: {
+    id: ToDo['id']
+    update: ToDoRequest
+  }) => Promise<void>
 }
 
 export function Content({
@@ -17,6 +24,7 @@ export function Content({
   searchKeyword,
   currentDate,
   handleAddTodo,
+  handleUpdateTodo,
 }: ContentProps) {
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
   const listRef = useRef<TodoListRef>(null)
@@ -56,6 +64,7 @@ export function Content({
           todos={filteredTodo}
           isRemoving={isRemoving}
           currentDate={currentDate}
+          handleUpdateTodo={handleUpdateTodo}
         />
       )}
     </Space>

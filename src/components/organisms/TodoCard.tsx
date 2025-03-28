@@ -9,18 +9,28 @@ type TodoCardType = {
   todo: ToDo
   isRemoving: boolean
   currentDate: Date
+  handleUpdateTodo: ({
+    id,
+    update,
+  }: {
+    id: ToDo['id']
+    update: ToDoRequest
+  }) => Promise<void>
 }
-export function TodoCard({ todo, isRemoving, currentDate }: TodoCardType) {
+export function TodoCard({
+  todo,
+  isRemoving,
+  currentDate,
+  handleUpdateTodo,
+}: TodoCardType) {
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const { text, deadline, done } = todo
-  const [isChecked, setIsChecked] = useState<boolean>(done)
+  const { id, text, deadline, done } = todo
 
-  const handleClickCard = () => !isRemoving && !isChecked && setIsEditing(true)
+  const handleClickCard = () => !isRemoving && !done && setIsEditing(true)
 
   const handleSubmit = (values: ToDoRequest) => {
-    // TODO 콜백 제공 예정
-    console.log('TodoItemCard [values]:: ', values)
     setIsEditing(false)
+    handleUpdateTodo({ id, update: values })
   }
 
   const handleCancelSubmit = () => {
@@ -31,7 +41,8 @@ export function TodoCard({ todo, isRemoving, currentDate }: TodoCardType) {
     // TODO 콜백 제공 예정
     if (isRemoving) return
     const checked = event.target.checked
-    setIsChecked(checked)
+    const { id, ...rest } = todo
+    handleUpdateTodo({ id, update: { ...rest, done: checked } })
   }
 
   return (
@@ -63,23 +74,23 @@ export function TodoCard({ todo, isRemoving, currentDate }: TodoCardType) {
             },
           }}
           variant="borderless"
-          className={`${isChecked && 'strike'} flex-1 overflow-hidden`}
+          className={`${done && 'strike'} flex-1 overflow-hidden`}
           onClick={handleClickCard}
           hoverable
         >
           <div className="flex grow items-center gap-2 overflow-hidden">
             <Checkbox
-              checked={isChecked}
+              checked={done}
               onChange={handleCheckboxChange}
               onClick={(event) => event.stopPropagation()}
             />
             <TodoLabel
               label={text}
-              color={isChecked ? 'var(--color-saige-grey)' : ''}
+              color={done ? 'var(--color-saige-grey)' : ''}
             />
           </div>
           <div className="min-w-20 flex flex-col items-end gap-0.5 justify-end">
-            {!isChecked && (
+            {!done && (
               <DeadlineTag currentDate={currentDate} deadline={deadline} />
             )}
             <FormattedDate

@@ -8,7 +8,7 @@ import { ToDoRequest } from '../../types/api'
 type TodoActionBarProps = {
   isRemoving: boolean
   currentDate: Date
-  handleAddTodo: (values: ToDoRequest) => void
+  handleAddTodo: (values: ToDoRequest) => Promise<void>
   handleSetIsRemoving: (value: boolean) => void
 }
 
