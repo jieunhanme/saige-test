@@ -6,20 +6,26 @@ import { TaskForm } from '../molecules'
 import { ToDoRequest } from '../../types/api'
 
 type TaskActionBarProps = {
+  isRemoving: boolean
   currentDate: Date
   handleAddTask: (values: ToDoRequest) => void
+  handleSetIsRemoving: (value: boolean) => void
 }
 
+export function TaskActionBar({
+  isRemoving,
   currentDate,
+  handleAddTask,
+  handleSetIsRemoving,
+}: TaskActionBarProps) {
   const [isAdding, setIsAdding] = useState<boolean>(false)
-  const [isRemoving, setIsRemoving] = useState<boolean>(false)
 
   const handleClickAdd = () => {
     setIsAdding(true)
-    setIsRemoving(false)
+    handleSetIsRemoving(false)
   }
 
-  const handleClickRemove = () => setIsRemoving((flag) => !flag)
+  const handleClickRemove = () => handleSetIsRemoving(!isRemoving)
 
   const handleSubmit = (values: ToDoRequest) => {
     handleAddTask(values)
