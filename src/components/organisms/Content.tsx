@@ -1,21 +1,27 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { Space } from 'antd'
 
 import { ToDo, ToDoRequest } from '../../types/api'
-import { TodoList, TodoActionBar, TodoListRef } from '../organisms'
 import { EmptyList } from '../atoms'
+import { TodoList, TodoActionBar, TodoListRef } from '../organisms'
 
 type ContentProps = {
+  todos: ToDo[]
   currentDate: Date
   searchKeyword: string
+  handleAddTodo: (newTodo: ToDoRequest) => void
 }
 
-export function Content({ searchKeyword, currentDate }: ContentProps) {
-  const [todos, setTodos] = useState<ToDo[]>([])
+export function Content({
+  todos,
+  searchKeyword,
+  currentDate,
+  handleAddTodo,
+}: ContentProps) {
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
   const listRef = useRef<TodoListRef>(null)
 
-  const handleSetIsRemoving = (value: boolean) => {
+  const handleSetIsRemoving = useCallback((value: boolean) => {
     if (value) {
       listRef.current?.setClear()
     } else {
@@ -23,11 +29,7 @@ export function Content({ searchKeyword, currentDate }: ContentProps) {
       console.log('Content [selectedTodos]:: ', selectedTodos)
     }
     setIsRemoving(value)
-  }
-
-  const handleAddTodo = (values: ToDoRequest) => {
-    setTodos((todos) => [...todos, { ...values, id: 1 }])
-  }
+  }, [])
 
   const filteredTodo = todos.filter((todo) => todo.text.includes(searchKeyword))
 
