@@ -33,7 +33,6 @@ export function DeadlinePicker({
         }
         return document.body
       }}
-      // NOTE MinDate
     />
   )
 }
