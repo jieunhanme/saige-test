@@ -1,5 +1,13 @@
 import { Checkbox, CheckboxChangeEvent, Space } from 'antd'
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { ToDo, ToDoRequest } from '../../types/api'
 import { TodoCard } from '../organisms'
@@ -24,11 +32,21 @@ export type TodoListRef = {
   setClear: () => void
 }
 
+const ITEMS_PER_PAGE = 10
+
 export const TodoList = forwardRef(function (
   { todos, isRemoving, currentDate, handleUpdateTodo }: TodoListProps,
   ref: ForwardedRef<TodoListRef>
 ) {
   const [selectedTodos, setSelectedTodos] = useState<TodoId[]>([])
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE)
+  const [hasMore, setHasMore] = useState(false)
+  const targetRef = useRef<HTMLDivElement>(null)
+
+  useImperativeHandle(ref, () => ({
+    getSelectedTodos: () => selectedTodos,
+    setClear: () => setSelectedTodos([]),
+  }))
 
   const handleCheckboxChange = (event: CheckboxChangeEvent, id: TodoId) => {
     const checked = event.target.checked
@@ -37,19 +55,42 @@ export const TodoList = forwardRef(function (
       setSelectedTodos((selected) => selected.filter((todoId) => todoId !== id))
   }
 
-  useImperativeHandle(ref, () => ({
-    getSelectedTodos: () => selectedTodos,
-    setClear: () => setSelectedTodos([]),
-  }))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (target && isIntersecting) {
+        setVisibleCount((prev) => {
+          const newCount = prev + ITEMS_PER_PAGE
+          if (newCount >= todos.length) {
+            setHasMore(false)
+            return todos.length
+          }
+          return newCount
+        })
+      }
+    })
+  })
 
+  useEffect(() => {
+    if (targetRef.current) {
+      observer.observe(targetRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [todos, observer])
+
+  const visibleTodos = useMemo(
+    () => todos.slice(0, visibleCount),
+    [todos, visibleCount]
+  )
   return (
     <Space
       direction="vertical"
       size="small"
       style={{ display: 'flex' }}
-      className="h-[600px] overflow-y-auto p-4"
+      className="h-[600px] overflow-y-auto p-4 pb-2"
     >
-      {todos.map((todo) => (
+      {visibleTodos.map((todo) => (
         <div key={todo.id} className="flex gap-2">
           {isRemoving && (
             <Checkbox
@@ -64,6 +105,12 @@ export const TodoList = forwardRef(function (
           />
         </div>
       ))}
+      <div ref={targetRef} />
+      {visibleCount > ITEMS_PER_PAGE && !hasMore && (
+        <div className="flex justify-center text-sm pb-2 text-[#00000073]">
+          모든 할 일을 가져왔어요! 🎉
+        </div>
+      )}
     </Space>
   )
 })
