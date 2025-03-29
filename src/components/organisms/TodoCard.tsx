@@ -38,7 +38,6 @@ export function TodoCard({
   }
 
   const handleCheckboxChange: CheckboxProps['onChange'] = (event) => {
-    // TODO 콜백 제공 예정
     if (isRemoving) return
     const checked = event.target.checked
     const { id, ...rest } = todo
