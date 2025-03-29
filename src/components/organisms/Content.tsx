@@ -17,6 +17,7 @@ type ContentProps = {
     id: ToDo['id']
     update: ToDoRequest
   }) => Promise<void>
+  handleRemoveTodo: (ids: ToDo['id'][]) => Promise<void>
 }
 
 export function Content({
@@ -25,19 +26,23 @@ export function Content({
   currentDate,
   handleAddTodo,
   handleUpdateTodo,
+  handleRemoveTodo,
 }: ContentProps) {
   const [isRemoving, setIsRemoving] = useState<boolean>(false)
   const listRef = useRef<TodoListRef>(null)
 
-  const handleSetIsRemoving = useCallback((value: boolean) => {
-    if (value) {
-      listRef.current?.setClear()
-    } else {
-      const selectedTodos = listRef.current?.getSelectedTodos()
-      console.log('Content [selectedTodos]:: ', selectedTodos)
-    }
-    setIsRemoving(value)
-  }, [])
+  const handleSetIsRemoving = useCallback(
+    (value: boolean) => {
+      if (value) {
+        listRef.current?.setClear()
+      } else {
+        const selectedTodos = listRef.current?.getSelectedTodos()
+        selectedTodos && handleRemoveTodo(selectedTodos)
+      }
+      setIsRemoving(value)
+    },
+    [handleRemoveTodo]
+  )
 
   const filteredTodo = todos.filter((todo) => todo.text.includes(searchKeyword))
 

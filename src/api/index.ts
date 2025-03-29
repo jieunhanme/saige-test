@@ -45,3 +45,14 @@ export const updateTodo = async ({
   }
   return response.json()
 }
+
+export const removeTodo = async (id: TodoId): Promise<APIResponse<void>> => {
+  const response = await fetch(`${baseUrl}/${id}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! [deleteTodo]: ${response.status}`)
+  }
+  return response.json()
+}

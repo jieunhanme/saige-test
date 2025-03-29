@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ConfigProvider } from 'antd'
 
-import { createTodo, getTodos, updateTodo } from './api'
+import { createTodo, getTodos, removeTodo, updateTodo } from './api'
 import { ToDo, ToDoRequest } from './types/api'
 import { useCurrentDate, useLocalStorage } from './hooks'
 import { Todo } from './components/templates'
@@ -61,6 +61,37 @@ function App() {
     [todos]
   )
 
+  const handleRemoveTodo = useCallback(
+    async (ids: ToDo['id'][]) => {
+      const backupTodos = new Map(todos.map((todo) => [todo.id, todo]))
+      setTodos((prev) => prev.filter((todo) => !ids.includes(todo.id)))
+
+      const removeRequests = ids.map(async (id) => {
+        try {
+          const { code } = await removeTodo(id)
+          if (code !== 200) return id
+          return null
+        } catch (error) {
+          console.log(error)
+        }
+      })
+
+      const results = await Promise.allSettled(removeRequests)
+
+      const rejectedIds = results.filter(
+        (result) => result.status === 'fulfilled' && result.value !== null
+      ) as PromiseFulfilledResult<number>[]
+
+      if (rejectedIds.length > 0) {
+        setTodos((prev) => [
+          ...prev,
+          ...rejectedIds.map(({ value }) => backupTodos.get(value)!),
+        ])
+      }
+    },
+    [todos]
+  )
+
   useEffect(() => {
     handleGetTodos()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,6 +114,7 @@ function App() {
         handleSetSearchKeyword={handleSetSearchKeyword}
         handleAddTodo={handleAddTodo}
         handleUpdateTodo={handleUpdateTodo}
+        handleRemoveTodo={handleRemoveTodo}
       />
     </ConfigProvider>
   )
