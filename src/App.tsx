@@ -68,16 +68,14 @@ function App() {
 
       const removeRequests = ids.map(async (id) => {
         try {
-          const { code } = await removeTodo(id)
-          if (code !== 200) return id
+          await removeTodo(id)
           return null
         } catch (error) {
-          console.log(error)
+          return id
         }
       })
 
       const results = await Promise.allSettled(removeRequests)
-
       const rejectedIds = results.filter(
         (result) => result.status === 'fulfilled' && result.value !== null
       ) as PromiseFulfilledResult<number>[]

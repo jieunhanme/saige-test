@@ -11,21 +11,18 @@ export const createTodo = async (
     method: 'POST',
     body: JSON.stringify(todo),
   })
-  if (!response.ok) {
-    throw new Error(`HTTP error! [createTodo]: ${response.status}`)
-  }
-  return response.json()
+  const data = errorHandler('createTodo', response)
+
+  return data
 }
 
 export const getTodos = async (): Promise<APIResponse<ToDo[]>> => {
   const response = await fetch(baseUrl, {
     method: 'GET',
   })
+  const data = errorHandler('getTodos', response)
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! [getTodos]: ${response.status}`)
-  }
-  return response.json()
+  return data
 }
 
 export const updateTodo = async ({
@@ -39,20 +36,30 @@ export const updateTodo = async ({
     method: 'PUT',
     body: JSON.stringify(todo),
   })
+  const data = errorHandler('updateTodo', response)
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! [updateTodo]: ${response.status}`)
-  }
-  return response.json()
+  return data
 }
 
 export const removeTodo = async (id: TodoId): Promise<APIResponse<void>> => {
   const response = await fetch(`${baseUrl}/${id}`, {
     method: 'DELETE',
   })
+  const data = errorHandler('removeTodo', response)
 
+  return data
+}
+
+async function errorHandler(key: string, response: Response) {
   if (!response.ok) {
-    throw new Error(`HTTP error! [deleteTodo]: ${response.status}`)
+    throw new Error(`HTTP error! [${key}]: ${response.status}`)
   }
-  return response.json()
+
+  const data = await response.json()
+  if (data.code !== 200) {
+    console.error(`HTTP error! [${key}]: ${data.message}`)
+    throw new Error(`HTTP error! [${key}]: ${data.code}, ${data.message}`)
+  }
+
+  return data
 }
