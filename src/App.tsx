@@ -21,14 +21,12 @@ function App() {
   )
 
   const handleAddTodo = useCallback(async (newTodo: ToDoRequest) => {
-    const tempId = Date.now()
-    setTodos((prev) => [...prev, { ...newTodo, id: tempId }])
     try {
       const { data } = await createTodo(newTodo)
       if (!data) return
-      setTodos((prev) => prev.map((todo) => (todo.id === tempId ? data : todo)))
+      setTodos((prev) => [...prev, data])
     } catch (error) {
-      setTodos((prev) => prev.filter((item) => item.id !== tempId))
+      console.log(error)
     }
   }, [])
 
