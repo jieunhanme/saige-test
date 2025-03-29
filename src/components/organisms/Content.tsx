@@ -38,6 +38,7 @@ export function Content({
       } else {
         const selectedTodos = listRef.current?.getSelectedTodos()
         selectedTodos && handleRemoveTodo(selectedTodos)
+        listRef.current?.setClear()
       }
       setIsRemoving(value)
     },
