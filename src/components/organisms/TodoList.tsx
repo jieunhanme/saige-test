@@ -55,6 +55,7 @@ export const TodoList = forwardRef(function (
       setSelectedTodos((selected) => selected.filter((todoId) => todoId !== id))
   }
 
+  // targetRef와의 연결 유지를 위해서 useEffect외부에 생성
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(({ target, isIntersecting }) => {

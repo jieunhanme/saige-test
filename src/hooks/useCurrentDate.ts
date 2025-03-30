@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 
+/**
+ * 현재 날짜를 제공하고 자정에 날짜를 업데이트하는 커스텀 훅
+ * @returns {Date} 현재 날짜 객체를 반환
+ */
 export function useCurrentDate() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
 

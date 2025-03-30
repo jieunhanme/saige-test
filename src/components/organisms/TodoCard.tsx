@@ -17,6 +17,7 @@ type TodoCardType = {
     update: ToDoRequest
   }) => Promise<void>
 }
+
 export function TodoCard({
   todo,
   isRemoving,
