@@ -1,5 +1,6 @@
 import { Input } from 'antd'
 import { SearchProps } from 'antd/es/input'
+import { useEffect, useState } from 'react'
 
 const { Search } = Input
 
@@ -12,6 +13,16 @@ export function TodoSearchInput({
   searchKeyword,
   handleSetSearchKeyword,
 }: TodoSearchInput) {
+  const [searchValue, setSearchValue] = useState(searchKeyword)
+
+  useEffect(() => {
+    setSearchValue(searchKeyword)
+  }, [searchKeyword])
+
+  const handleChange: SearchProps['onChange'] = (event) => {
+    setSearchValue(event.target.value)
+  }
+
   const handleSearch: SearchProps['onSearch'] = (value) =>
     handleSetSearchKeyword(value)
 
@@ -20,7 +31,8 @@ export function TodoSearchInput({
       placeholder="키워드 검색"
       variant="filled"
       size="large"
-      defaultValue={searchKeyword}
+      value={searchValue}
+      onChange={handleChange}
       onSearch={handleSearch}
       autoComplete="off"
       allowClear

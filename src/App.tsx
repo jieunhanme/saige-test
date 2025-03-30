@@ -20,15 +20,19 @@ function App() {
     [setStoredValue]
   )
 
-  const handleAddTodo = useCallback(async (newTodo: ToDoRequest) => {
-    try {
-      const { data } = await createTodo(newTodo)
-      if (!data) return
-      setTodos((prev) => [...prev, data])
-    } catch (error) {
-      console.log(error)
-    }
-  }, [])
+  const handleAddTodo = useCallback(
+    async (newTodo: ToDoRequest) => {
+      try {
+        const { data } = await createTodo(newTodo)
+        if (!data) return
+        handleSetSearchKeyword('')
+        setTodos((prev) => [...prev, data])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    [handleSetSearchKeyword]
+  )
 
   const handleGetTodos = useCallback(async () => {
     try {
