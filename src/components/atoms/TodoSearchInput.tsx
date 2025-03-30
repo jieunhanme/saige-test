@@ -20,7 +20,9 @@ export function TodoSearchInput({
   }, [searchKeyword])
 
   const handleChange: SearchProps['onChange'] = (event) => {
-    setSearchValue(event.target.value)
+    const value = event.target.value
+    setSearchValue(value)
+    if (!value) handleSetSearchKeyword(value)
   }
 
   const handleSearch: SearchProps['onSearch'] = (value) =>
