@@ -71,6 +71,8 @@ export function TodoCard({
               width: '100%',
               height: 60,
               padding: 8,
+              backgroundColor: isRemoving ? '#f1f1f16e' : '',
+              cursor: isRemoving ? 'default' : '',
             },
           }}
           variant="borderless"
@@ -83,6 +85,7 @@ export function TodoCard({
               checked={done}
               onChange={handleCheckboxChange}
               onClick={(event) => event.stopPropagation()}
+              disabled={isRemoving}
             />
             <TodoLabel
               label={text}
